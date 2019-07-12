@@ -129,7 +129,7 @@
 {
     [super touchesBegan:touches withEvent:event];
     self.backgroundColorBackup = self.backgroundColor;
-    self.backgroundColor = self.tintColor;
+    self.backgroundColor = [UIColor colorWithRed:0.42 green:0.50 blue:0.96 alpha:1.0];
     UIColor *textColor = ([self.backgroundColorBackup isEqual:[UIColor clearColor]] ?
                           [self.class averageContentColor] : self.backgroundColorBackup);
     self.numberLabel.textColor = textColor;

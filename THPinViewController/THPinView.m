@@ -36,24 +36,26 @@
         _delegate = delegate;
         _input = [NSMutableString string];
         
-        _promptLabel = [[UILabel alloc] init];
-        _promptLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _promptLabel.textAlignment = NSTextAlignmentCenter;
-        _promptLabel.numberOfLines = 0;
-        _promptLabel.font = [UIFont systemFontOfSize:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 22.0f : 18.0f];
-        [_promptLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
-                                                      forAxis:UILayoutConstraintAxisHorizontal];
-        [self addSubview:_promptLabel];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[promptLabel]|" options:0 metrics:nil
-                                                                       views:@{ @"promptLabel" : _promptLabel }]];
-        
         _inputCirclesView = [[THPinInputCirclesView alloc] initWithPinLength:[_delegate pinLengthForPinView:self]];
         _inputCirclesView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:_inputCirclesView];
+        
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_inputCirclesView attribute:NSLayoutAttributeCenterX
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self attribute:NSLayoutAttributeCenterX
                                                         multiplier:1.0f constant:0.0f]];
+        
+        _promptLabel = [[UILabel alloc] init];
+        _promptLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _promptLabel.textAlignment = NSTextAlignmentCenter;
+        _promptLabel.numberOfLines = 0;
+        _promptLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+        [_promptLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
+                                                      forAxis:UILayoutConstraintAxisHorizontal];
+        [self addSubview:_promptLabel];
+        
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[promptLabel]|" options:0 metrics:nil
+                                                                       views:@{ @"promptLabel" : _promptLabel }]];
         
         _numPadView = [[THPinNumPadView alloc] initWithDelegate:self];
         _numPadView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -97,7 +99,7 @@
                                                             multiplier:0.4f constant:0.0f]];
         }
         
-        NSMutableString *vFormat = [NSMutableString stringWithString:@"V:|[promptLabel]-(paddingBetweenPromptLabelAndInputCircles)-[inputCirclesView]-(paddingBetweenInputCirclesAndNumPad)-[numPadView]"];
+        NSMutableString *vFormat = [NSMutableString stringWithString:@"V:|[inputCirclesView]-(paddingBetweenPromptLabelAndInputCircles)-[promptLabel]-(paddingBetweenInputCirclesAndNumPad)-[numPadView]"];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             _paddingBetweenPromptLabelAndInputCircles = 22.0f;
             _paddingBetweenInputCirclesAndNumPad = 52.0f;

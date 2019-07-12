@@ -79,7 +79,7 @@
 
 - (CGFloat)circlePadding
 {
-    return 2.0f * [THPinInputCircleView diameter];
+    return 24.0f;
 }
 
 - (void)fillCircleAtPosition:(NSUInteger)position
