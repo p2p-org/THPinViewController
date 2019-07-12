@@ -105,16 +105,9 @@
             _paddingBetweenInputCirclesAndNumPad = 52.0f;
         } else {
             [vFormat appendString:@"-(paddingBetweenNumPadAndBottomButton)-[bottomButton]"];
-            BOOL isFourInchScreen = (fabs(CGRectGetHeight([UIScreen mainScreen].bounds) - 568.0f) < DBL_EPSILON);
-            if (isFourInchScreen) {
-                _paddingBetweenPromptLabelAndInputCircles = 22.5f;
-                _paddingBetweenInputCirclesAndNumPad = 41.5f;
-                _paddingBetweenNumPadAndBottomButton = 19.0f;
-            } else {
-                _paddingBetweenPromptLabelAndInputCircles = 15.5f;
-                _paddingBetweenInputCirclesAndNumPad = 14.0f;
-                _paddingBetweenNumPadAndBottomButton = -7.5f;
-            }
+            _paddingBetweenPromptLabelAndInputCircles = 22.5f;
+            _paddingBetweenInputCirclesAndNumPad = 41.5f;
+            _paddingBetweenNumPadAndBottomButton = 19.0f;
         }
         [vFormat appendString:@"|"];
         
