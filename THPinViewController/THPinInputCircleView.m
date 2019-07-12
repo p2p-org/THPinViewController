@@ -16,7 +16,6 @@
     if (self)
     {
         self.layer.cornerRadius = [[self class] diameter] / 2.0f;
-        self.layer.borderWidth = 1.0f;
         
         [self tintColorDidChange];
     }
@@ -25,12 +24,12 @@
 
 - (void)tintColorDidChange
 {
-    self.layer.borderColor = self.tintColor.CGColor;
+    self.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
 }
 
 - (void)setFilled:(BOOL)filled
 {
-    self.backgroundColor = (filled) ? self.tintColor : [UIColor clearColor];
+    self.backgroundColor = (filled) ? [UIColor colorWithRed:0.42 green:0.50 blue:0.96 alpha:1.0] : [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
 }
 
 - (CGSize)intrinsicContentSize
