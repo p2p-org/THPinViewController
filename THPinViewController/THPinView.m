@@ -71,6 +71,7 @@
         _bottomButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [_bottomButton setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                        forAxis:UILayoutConstraintAxisHorizontal];
+        [_bottomButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
         [self updateBottomButton];
         [self.bottomButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bottomButton];
