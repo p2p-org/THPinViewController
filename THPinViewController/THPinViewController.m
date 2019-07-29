@@ -152,6 +152,15 @@
     self.pinView.disableCancel = self.disableCancel;
 }
 
+- (void)setLeftBottomButton:(UIButton *)leftBottomButton
+{
+    if (self.leftBottomButton == leftBottomButton) {
+        return;
+    }
+    _leftBottomButton = leftBottomButton;
+    self.pinView.leftBottomButton = self.leftBottomButton;
+}
+
 #pragma mark - Blur
 
 - (void)addBlurView
