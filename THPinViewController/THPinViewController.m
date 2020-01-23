@@ -262,4 +262,9 @@
     }
 }
 
+- (void)pinView:(THPinView *)pinView didAddNumberToCurrentPin:(NSString *)pin
+{
+    [self.delegate pinViewController:self didAddNumberToCurrentPin:pin];
+}
+
 @end
