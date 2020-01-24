@@ -252,10 +252,8 @@
     
     [self.input appendString:[NSString stringWithFormat:@"%lu", (unsigned long)number]];
     [self.inputCirclesView fillCircleAtPosition:self.input.length - 1];
-    
-    if ([self.delegate respondsToSelector:@selector(pinViewController:didAddNumberToCurrentPin:)]) {
-        [self.delegate pinViewController:self didAddNumberToCurrentPin:pin];
-    }
+
+    [self.delegate pinView:self isPinValid:self.input];
     
     [self updateBottomButton];
     
