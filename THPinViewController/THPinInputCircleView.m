@@ -36,7 +36,7 @@
 
 - (void)tintColorDidChange
 {
-    self.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
+    self.backgroundColor = self.defaultColor;
 }
 
 - (void)setFilled:(BOOL)filled
