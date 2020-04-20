@@ -119,11 +119,15 @@
 
 - (void)tintColorDidChange
 {
-    UIColor *color = [UIColor colorNamed:@"THPinViewController.CircleViewBackground"];
+    UIColor *color;
+    if (@available(iOS 11.0, *)) {
+        color = [UIColor colorNamed:@"THPinViewController.CircleViewBackground"];
+    }
     if (color == nil) {
         color = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
     }
     self.backgroundColor = color;
+
     self.numberLabel.textColor = self.tintColor;
     self.lettersLabel.textColor = self.tintColor;
 }
@@ -132,11 +136,17 @@
 {
     [super touchesBegan:touches withEvent:event];
     self.backgroundColorBackup = self.backgroundColor;
-    UIColor *color = [UIColor colorNamed:@"THPinViewController.CircleViewFilled"];
+
+    UIColor *color;
+    if (@available(iOS 11.0, *)) {
+        color = [UIColor colorNamed:@"THPinViewController.CircleViewFilled"];
+    }
     if (color == nil) {
         color = [UIColor colorWithRed:0.42 green:0.50 blue:0.96 alpha:1.0];
     }
     self.backgroundColor = color;
+
+
     UIColor *textColor = ([self.backgroundColorBackup isEqual:[UIColor clearColor]] ?
                           [self.class averageContentColor] : self.backgroundColorBackup);
     self.numberLabel.textColor = textColor;

@@ -8,6 +8,10 @@
 
 #import "THPinInputCircleView.h"
 
+@interface THPinInputCircleView ()
+@property (nonatomic, strong) UIColor* defaultColor;
+@end
+
 @implementation THPinInputCircleView
 
 - (instancetype)init
@@ -15,6 +19,14 @@
     self = [super init];
     if (self)
     {
+        if (@available(iOS 11.0, *)) {
+            self.defaultColor = [UIColor colorNamed:@"THPinViewController.CircleViewBackground"];
+        }
+
+        if (self.defaultColor == nil) {
+            self.defaultColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
+        }
+
         self.layer.cornerRadius = [[self class] diameter] / 2.0f;
 
         [self tintColorDidChange];
@@ -29,18 +41,15 @@
 
 - (void)setFilled:(BOOL)filled
 {
-
-    UIColor *defaultColor = [UIColor colorNamed:@"THPinViewController.CircleViewBackground"];
-    if (defaultColor == nil) {
-        defaultColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
+    UIColor *filledColor;
+    if (@available(iOS 11.0, *)) {
+        filledColor = [UIColor colorNamed:@"THPinViewController.CircleViewFilled"];
     }
 
-    UIColor *filledColor = [UIColor colorNamed:@"THPinViewController.CircleViewFilled"];
     if (filledColor == nil) {
         filledColor = [UIColor colorWithRed:0.42 green:0.50 blue:0.96 alpha:1.0];
     }
-
-    self.backgroundColor = (filled) ? filledColor : defaultColor;
+    self.backgroundColor = (filled) ? filledColor : self.defaultColor;
 }
 
 - (CGSize)intrinsicContentSize
