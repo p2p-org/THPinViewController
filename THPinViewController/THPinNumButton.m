@@ -30,14 +30,14 @@
     {
         _number = number;
         _letters = letters;
-        
+
         self.layer.cornerRadius = [[self class] diameter] / 2.0f;
-        
+
         UIView *contentView = [[UIView alloc] init];
         contentView.translatesAutoresizingMaskIntoConstraints = NO;
         contentView.userInteractionEnabled = NO;
         [self addSubview:contentView];
-        
+
         _numberLabel = [[UILabel alloc] init];
         _numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _numberLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)number];
@@ -47,10 +47,10 @@
         [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[numberLabel]|" options:0
                                                                             metrics:nil
                                                                               views:@{ @"numberLabel" : _numberLabel }]];
-        
+
         CGSize numberSize = [_numberLabel.text sizeWithAttributes:@{ NSFontAttributeName : _numberLabel.font }];
         CGFloat contentViewHeight = ceil(numberSize.height);
-        
+
         if (_letters)
         {
             _lettersLabel = [[UILabel alloc] init];
@@ -62,13 +62,13 @@
             [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[lettersLabel]|" options:0
                                                                                 metrics:nil
                                                                                   views:@{ @"lettersLabel" : _lettersLabel }]];
-            
+
             CGFloat numberLabelYCorrection = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 0.0f : -3.5f;
             CGFloat lettersLabelYCorrection = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? -6.5f : -4.0f;
-            
+
             CGSize lettersSize = [_lettersLabel.text sizeWithAttributes:@{ NSFontAttributeName : _lettersLabel.font }];
             contentViewHeight += ceil(lettersSize.height) + numberLabelYCorrection;
-            
+
             // pin number label to top
             [contentView addConstraint:[NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeTop
                                                                     relatedBy:NSLayoutRelationEqual
@@ -80,7 +80,7 @@
                                                                        toItem:contentView attribute:NSLayoutAttributeBottom
                                                                    multiplier:1.0f constant:lettersLabelYCorrection]];
         } else {
-            
+
             // pin number label to top
             [contentView addConstraint:[NSLayoutConstraint constraintWithItem:_numberLabel attribute:NSLayoutAttributeTop
                                                                     relatedBy:NSLayoutRelationEqual
@@ -119,8 +119,11 @@
 
 - (void)tintColorDidChange
 {
-//    self.layer.borderColor = self.tintColor.CGColor;
-    self.backgroundColor = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
+    UIColor *color = [UIColor colorNamed:@"THPinViewController.CircleViewBackground"];
+    if (color == nil) {
+        color = [UIColor colorWithRed:0.95 green:0.96 blue:0.98 alpha:1.0];
+    }
+    self.backgroundColor = color;
     self.numberLabel.textColor = self.tintColor;
     self.lettersLabel.textColor = self.tintColor;
 }
@@ -129,7 +132,11 @@
 {
     [super touchesBegan:touches withEvent:event];
     self.backgroundColorBackup = self.backgroundColor;
-    self.backgroundColor = [UIColor colorWithRed:0.42 green:0.50 blue:0.96 alpha:1.0];
+    UIColor *color = [UIColor colorNamed:@"THPinViewController.CircleViewFilled"];
+    if (color == nil) {
+        color = [UIColor colorWithRed:0.42 green:0.50 blue:0.96 alpha:1.0];
+    }
+    self.backgroundColor = color;
     UIColor *textColor = ([self.backgroundColorBackup isEqual:[UIColor clearColor]] ?
                           [self.class averageContentColor] : self.backgroundColorBackup);
     self.numberLabel.textColor = textColor;
