@@ -191,15 +191,8 @@
         self.bottomButton.hidden = YES;
         return;
     }
-    
     self.bottomButton.hidden = NO;
-    NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"THPinViewController"
-                                                                                ofType:@"bundle"]];
-    
-        self.bottomButton.hidden = NO;
-        [self.bottomButton setTitle:NSLocalizedStringFromTableInBundle(@"delete_button_title", @"THPinViewController",
-                                                                       bundle, nil)
-                           forState:UIControlStateNormal];
+    [self.bottomButton setTitle:NSLocalizedString(@"THPinViewController_delete_title", "") forState:UIControlStateNormal];
 }
 
 - (void)updateLeftBottomButton
