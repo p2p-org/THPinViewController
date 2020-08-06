@@ -68,10 +68,10 @@
         _bottomButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _bottomButton.translatesAutoresizingMaskIntoConstraints = NO;
         _bottomButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+        _bottomButton.titleLabel.textColor = self.promptColor;
         _bottomButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [_bottomButton setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                        forAxis:UILayoutConstraintAxisHorizontal];
-        [_bottomButton setTitleColor:self.promptColor forState:UIControlStateNormal];
         [self updateBottomButton];
         [self.bottomButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bottomButton];
