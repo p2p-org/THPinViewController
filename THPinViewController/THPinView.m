@@ -68,7 +68,13 @@
         _bottomButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _bottomButton.translatesAutoresizingMaskIntoConstraints = NO;
         _bottomButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
-        _bottomButton.titleLabel.textColor = self.promptColor;
+        
+        if (@available(iOS 11.0, *)) {
+            _bottomButton.titleLabel.textColor = [UIColor colorNamed:@"THPinViewController.TextColor"];
+        } else {
+            _bottomButton.titleLabel.textColor = self.promptColor;
+        }
+         
         _bottomButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [_bottomButton setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                        forAxis:UILayoutConstraintAxisHorizontal];
