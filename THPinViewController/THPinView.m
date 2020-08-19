@@ -70,9 +70,9 @@
         _bottomButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
         
         if (@available(iOS 11.0, *)) {
-            _bottomButton.titleLabel.textColor = [UIColor colorNamed:@"THPinViewController.TextColor"];
+            [_bottomButton setTitleColor:[UIColor colorNamed:@"THPinViewController.TextColor"] forState:UIControlStateNormal];
         } else {
-            _bottomButton.titleLabel.textColor = self.promptColor;
+            [_bottomButton setTitleColor:self.promptColor forState:UIControlStateNormal];
         }
          
         _bottomButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
