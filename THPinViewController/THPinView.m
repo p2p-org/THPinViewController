@@ -40,7 +40,7 @@
         _promptLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _promptLabel.textAlignment = NSTextAlignmentCenter;
         _promptLabel.numberOfLines = 0;
-        _promptLabel.font = [UIFont systemFontOfSize:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 22.0f : 18.0f];
+        _promptLabel.font = [UIFont systemFontOfSize: 21.0f weight: UIFontWeightBold];
         [_promptLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                       forAxis:UILayoutConstraintAxisHorizontal];
         [self addSubview:_promptLabel];
@@ -99,7 +99,7 @@
         
         NSMutableString *vFormat = [NSMutableString stringWithString:@"V:|[promptLabel]-(paddingBetweenPromptLabelAndInputCircles)-[inputCirclesView]-(paddingBetweenInputCirclesAndNumPad)-[numPadView]"];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            _paddingBetweenPromptLabelAndInputCircles = 22.0f;
+            _paddingBetweenPromptLabelAndInputCircles = 44.0f;
             _paddingBetweenInputCirclesAndNumPad = 52.0f;
         } else {
             [vFormat appendString:@"-(paddingBetweenNumPadAndBottomButton)-[bottomButton]"];
