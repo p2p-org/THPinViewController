@@ -20,7 +20,6 @@
 
 @property (nonatomic, assign) CGFloat paddingBetweenPromptLabelAndInputCircles;
 @property (nonatomic, assign) CGFloat paddingBetweenInputCirclesAndNumPad;
-@property (nonatomic, assign) CGFloat paddingBetweenNumPadAndBottomButton;
 
 @property (nonatomic, strong) NSMutableString *input;
 
@@ -70,59 +69,39 @@
         _bottomButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [_bottomButton setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                        forAxis:UILayoutConstraintAxisHorizontal];
+        [_bottomButton setTitleColor: [self promptColor] forState:UIControlStateNormal];
         [self updateBottomButton];
+        [self.bottomButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bottomButton];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            // place button right of zero number button
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeCenterX
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self attribute:NSLayoutAttributeRight
-                                                            multiplier:1.0f constant:-[THPinNumButton diameter] / 2.0f]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self attribute:NSLayoutAttributeBottom
-                                                            multiplier:1.0f constant:-[THPinNumButton diameter] / 2.0f]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeWidth
-                                                             relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:0
-                                                            multiplier:0.0f constant:[THPinNumButton diameter]]];
-        } else {
-            // place button beneath the num pad on the right
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeRight
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self attribute:NSLayoutAttributeRight
-                                                            multiplier:1.0f constant:0.0f]];
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeWidth
-                                                             relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                toItem:self attribute:NSLayoutAttributeWidth
-                                                            multiplier:0.4f constant:0.0f]];
-        }
+       
+        // place button right of zero number button
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self attribute:NSLayoutAttributeRight
+                                                        multiplier:1.0f constant:-[THPinNumButton diameter] / 2.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0f constant:-[THPinNumButton diameter] / 2.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeWidth
+                                                         relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:0
+                                                        multiplier:0.0f constant:[THPinNumButton diameter]]];
         
         NSMutableString *vFormat = [NSMutableString stringWithString:@"V:|[promptLabel]-(paddingBetweenPromptLabelAndInputCircles)-[inputCirclesView]-(paddingBetweenInputCirclesAndNumPad)-[numPadView]"];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             _paddingBetweenPromptLabelAndInputCircles = 88.0f;
             _paddingBetweenInputCirclesAndNumPad = 52.0f;
         } else {
-            [vFormat appendString:@"-(paddingBetweenNumPadAndBottomButton)-[bottomButton]"];
-            BOOL isFourInchScreen = (fabs(CGRectGetHeight([UIScreen mainScreen].bounds) - 568.0f) < DBL_EPSILON);
-            if (isFourInchScreen) {
-                _paddingBetweenPromptLabelAndInputCircles = 22.5f;
-                _paddingBetweenInputCirclesAndNumPad = 41.5f;
-                _paddingBetweenNumPadAndBottomButton = 19.0f;
-            } else {
-                _paddingBetweenPromptLabelAndInputCircles = 15.5f;
-                _paddingBetweenInputCirclesAndNumPad = 14.0f;
-                _paddingBetweenNumPadAndBottomButton = -7.5f;
-            }
+            _paddingBetweenPromptLabelAndInputCircles = 22.5f;
+            _paddingBetweenInputCirclesAndNumPad = 41.5f;
         }
         [vFormat appendString:@"|"];
         
         NSDictionary *metrics = @{ @"paddingBetweenPromptLabelAndInputCircles" : @(_paddingBetweenPromptLabelAndInputCircles),
-                                   @"paddingBetweenInputCirclesAndNumPad" : @(_paddingBetweenInputCirclesAndNumPad),
-                                   @"paddingBetweenNumPadAndBottomButton" : @(_paddingBetweenNumPadAndBottomButton) };
+                                   @"paddingBetweenInputCirclesAndNumPad" : @(_paddingBetweenInputCirclesAndNumPad)};
         NSDictionary *views = @{ @"promptLabel" : _promptLabel,
                                  @"inputCirclesView" : _inputCirclesView,
-                                 @"numPadView" : _numPadView,
-                                 @"bottomButton" : _bottomButton };
+                                 @"numPadView" : _numPadView};
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vFormat options:0 metrics:metrics views:views]];
     }
     return self;
@@ -143,9 +122,6 @@
     CGFloat height = (self.promptLabel.intrinsicContentSize.height + self.paddingBetweenPromptLabelAndInputCircles +
                       self.inputCirclesView.intrinsicContentSize.height + self.paddingBetweenInputCirclesAndNumPad +
                       self.numPadView.intrinsicContentSize.height);
-    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        height += self.paddingBetweenNumPadAndBottomButton + self.bottomButton.intrinsicContentSize.height;
-    }
     return CGSizeMake(self.numPadView.intrinsicContentSize.width, height);
 }
 
@@ -200,31 +176,22 @@
 
 - (void)updateBottomButton
 {
+    if (self.input.length == 0) {
+        self.bottomButton.hidden = YES;
+        return;
+    }
+    
+    self.bottomButton.hidden = NO;
     NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"THPinViewController"
                                                                                 ofType:@"bundle"]];
-    if (self.input.length == 0) {
-        self.bottomButton.hidden = self.disableCancel;
-        [self.bottomButton setTitle:NSLocalizedStringFromTableInBundle(@"cancel_button_title", @"THPinViewController",
-                                                                       bundle, nil)
-                           forState:UIControlStateNormal];
-        [self.bottomButton removeTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-        [self.bottomButton addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-    } else {
+    
         self.bottomButton.hidden = NO;
         [self.bottomButton setTitle:NSLocalizedStringFromTableInBundle(@"delete_button_title", @"THPinViewController",
                                                                        bundle, nil)
                            forState:UIControlStateNormal];
-        [self.bottomButton removeTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-        [self.bottomButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-    }
 }
 
 #pragma mark - User Interaction
-
-- (void)cancel:(id)sender
-{
-    [self.delegate cancelButtonTappedInPinView:self];
-}
 
 - (void)delete:(id)sender
 {
