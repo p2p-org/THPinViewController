@@ -13,8 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface THPinInputCircleView : UIView
 
 @property (nonatomic, assign) BOOL filled;
+@property (class) UIColor* fillColor;
 
 + (CGFloat)diameter;
++ (void)setFillColor:(UIColor *)fillColor;
 
 @end
 

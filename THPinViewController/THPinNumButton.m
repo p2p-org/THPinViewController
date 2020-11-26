@@ -8,6 +8,7 @@
 
 #import "THPinNumButton.h"
 #import "THPinViewController.h"
+#import "THPinInputCircleView.h"
 
 @interface THPinNumButton ()
 
@@ -32,7 +33,6 @@
         _letters = letters;
         
         self.layer.cornerRadius = [[self class] diameter] / 2.0f;
-        self.layer.borderWidth = 1.0f;
         
         UIView *contentView = [[UIView alloc] init];
         contentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -120,7 +120,8 @@
 
 - (void)tintColorDidChange
 {
-    self.layer.borderColor = self.tintColor.CGColor;
+//    self.layer.borderColor = self.tintColor.CGColor;
+    self.backgroundColor = self.tintColor;
     self.numberLabel.textColor = self.tintColor;
     self.lettersLabel.textColor = self.tintColor;
 }
