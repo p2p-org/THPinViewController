@@ -172,6 +172,15 @@
     [self updateBottomButton];
 }
 
+- (void)setLeftBottomButton:(UIButton *)leftBottomButton
+{
+    if (self.leftBottomButton == leftBottomButton) {
+        return;
+    }
+    _leftBottomButton = leftBottomButton;
+    [self updateLeftBottomButton];
+}
+
 #pragma mark - Public
 
 - (void)updateBottomButton
@@ -189,6 +198,32 @@
         [self.bottomButton setTitle:NSLocalizedStringFromTableInBundle(@"delete_button_title", @"THPinViewController",
                                                                        bundle, nil)
                            forState:UIControlStateNormal];
+}
+
+- (void)updateLeftBottomButton
+{
+    if (!_leftBottomButton) {
+        return;
+    }
+    
+    _leftBottomButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_leftBottomButton setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
+                                                   forAxis:UILayoutConstraintAxisHorizontal];
+    
+    [self addSubview:_leftBottomButton];
+    
+    // place button right of zero number button
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_leftBottomButton attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self attribute:NSLayoutAttributeLeft
+                                                    multiplier:1.0f constant:[THPinNumButton diameter] / 2.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_leftBottomButton attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0f constant:-[THPinNumButton diameter] / 2.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_leftBottomButton attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:0
+                                                    multiplier:0.0f constant:[THPinNumButton diameter]]];
 }
 
 #pragma mark - User Interaction
@@ -219,6 +254,8 @@
     
     [self.input appendString:[NSString stringWithFormat:@"%lu", (unsigned long)number]];
     [self.inputCirclesView fillCircleAtPosition:self.input.length - 1];
+    
+    [self.delegate pinView:self didAddNumberToCurrentPin:self.input];
     
     [self updateBottomButton];
     

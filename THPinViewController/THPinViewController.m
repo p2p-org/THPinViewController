@@ -152,6 +152,15 @@
     self.pinView.disableCancel = self.disableCancel;
 }
 
+- (void)setLeftBottomButton:(UIButton *)leftBottomButton
+{
+    if (self.leftBottomButton == leftBottomButton) {
+        return;
+    }
+    _leftBottomButton = leftBottomButton;
+    self.pinView.leftBottomButton = self.leftBottomButton;
+}
+
 #pragma mark - Blur
 
 - (void)addBlurView
@@ -256,6 +265,11 @@
 - (void)pinViewDidStartEntering:(THPinView *)pinView
 {
     [self.delegate pinViewControllerDidStartEntering:self];
+}
+
+- (void)pinView:(THPinView *)pinView didAddNumberToCurrentPin:(NSString *)pin
+{
+    [self.delegate pinViewController:self didAddNumberToCurrentPin:pin];
 }
 
 @end

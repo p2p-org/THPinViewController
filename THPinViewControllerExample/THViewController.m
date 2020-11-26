@@ -102,6 +102,10 @@ static const NSUInteger THNumberOfPinEntries = 6;
     pinViewController.promptColor = darkBlueColor;
     pinViewController.view.tintColor = darkBlueColor;
     
+    // Test button
+    UIButton *leftBottomButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [pinViewController setLeftBottomButton:leftBottomButton];
+    
     // for a solid background color, use this:
     pinViewController.backgroundColor = [UIColor whiteColor];
     

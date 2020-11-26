@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)correctPinWasEnteredInPinView:(THPinView *)pinView;
 - (void)incorrectPinWasEnteredInPinView:(THPinView *)pinView;
 - (void)pinViewDidStartEntering:(THPinView *)pinView;
+- (void)pinView:(THPinView *)pinView didAddNumberToCurrentPin:(NSString *)pin;
 
 @end
 
@@ -31,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UIColor *promptColor;
 @property (nonatomic, assign) BOOL hideLetters;
 @property (nonatomic, assign) BOOL disableCancel;
+@property (nonatomic, strong, nullable) UIButton *leftBottomButton;
 
 - (instancetype)initWithDelegate:(nullable id<THPinViewDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 - (void) resetInput;
