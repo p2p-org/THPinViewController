@@ -157,8 +157,8 @@ static UIColor* _textColor;
                      animations:^{
                          self.backgroundColor = self.backgroundColorBackup;
                      } completion:^(BOOL finished) {
-                         self.numberLabel.textColor = self.tintColor;
-                         self.lettersLabel.textColor = self.tintColor;
+                         self.numberLabel.textColor = [[self class] textColor];
+                         self.lettersLabel.textColor = [[self class] textColor];
                      }];
 }
 
