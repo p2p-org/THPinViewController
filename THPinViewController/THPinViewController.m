@@ -269,7 +269,9 @@
 
 - (void)pinView:(THPinView *)pinView didAddNumberToCurrentPin:(NSString *)pin
 {
-    [self.delegate pinViewController:self didAddNumberToCurrentPin:pin];
+    if ([self.delegate respondsToSelector:@selector(pinViewController:didAddNumberToCurrentPin:)]) {
+        [self.delegate pinViewController:self didAddNumberToCurrentPin:pin];
+    }
 }
 
 @end
