@@ -14,12 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, assign) NSUInteger number;
 @property (nonatomic, readonly, copy, nullable) NSString *letters;
+@property (class) UIColor* textColor;
 
 - (instancetype)initWithNumber:(NSUInteger)number letters:(nullable NSString *)letters NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithFrame:(CGRect)frame __attribute__((unavailable("Use -initWithNumber:letters: instead")));
 - (instancetype)initWithCoder:(NSCoder *)aDecoder __attribute__((unavailable("Use -initWithNumber:letters: instead")));
 
 + (CGFloat)diameter;
++ (void)setTextColor:(UIColor *)textColor;
 
 @end
 

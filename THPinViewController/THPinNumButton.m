@@ -24,6 +24,8 @@
 
 @implementation THPinNumButton
 
+static UIColor* _textColor;
+
 - (instancetype)initWithNumber:(NSUInteger)number letters:(NSString *)letters
 {
     self = [super initWithFrame:CGRectZero];
@@ -122,8 +124,8 @@
 {
 //    self.layer.borderColor = self.tintColor.CGColor;
     self.backgroundColor = self.tintColor;
-    self.numberLabel.textColor = self.tintColor;
-    self.lettersLabel.textColor = self.tintColor;
+    self.numberLabel.textColor = [[self class] textColor];
+    self.lettersLabel.textColor = [[self class] textColor];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -192,6 +194,19 @@
         UIGraphicsEndImageContext();
     });
     return averageContentColor;
+}
+
++ (UIColor *)textColor
+{
+    if (_textColor == nil) {
+        return UIColor.blackColor;
+    }
+    return _textColor;
+}
+
++ (void)setTextColor:(UIColor *)textColor
+{
+    _textColor = textColor;
 }
 
 @end
