@@ -161,6 +161,15 @@
     self.pinView.leftBottomButton = self.leftBottomButton;
 }
 
+- (void)setBottomButtonImage:(UIImage *)bottomButtonImage
+{
+    if (self.bottomButtonImage == bottomButtonImage) {
+        return;
+    }
+    _bottomButtonImage = bottomButtonImage;
+    self.pinView.bottomButtonImage = self.bottomButtonImage;
+}
+
 #pragma mark - Blur
 
 - (void)addBlurView

@@ -181,6 +181,15 @@
     [self updateLeftBottomButton];
 }
 
+- (void)setBottomButtonImage:(UIImage *)bottomButtonImage
+{
+    if (self.bottomButtonImage == bottomButtonImage) {
+        return;
+    }
+    _bottomButtonImage = [bottomButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [_bottomButton setImage:_bottomButtonImage forState:UIControlStateNormal];
+}
+
 #pragma mark - Public
 
 - (void)updateBottomButton
@@ -191,13 +200,20 @@
     }
     
     self.bottomButton.hidden = NO;
-    NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"THPinViewController"
-                                                                                ofType:@"bundle"]];
     
-        self.bottomButton.hidden = NO;
-        [self.bottomButton setTitle:NSLocalizedStringFromTableInBundle(@"delete_button_title", @"THPinViewController",
-                                                                       bundle, nil)
-                           forState:UIControlStateNormal];
+    if (_bottomButtonImage == nil) {
+        NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"THPinViewController"
+                                                                                    ofType:@"bundle"]];
+        
+            self.bottomButton.hidden = NO;
+            [self.bottomButton setTitle:NSLocalizedStringFromTableInBundle(@"delete_button_title", @"THPinViewController",
+                                                                           bundle, nil)
+                               forState:UIControlStateNormal];
+    } else {
+        [_bottomButton setImage:_bottomButtonImage forState:UIControlStateNormal];
+        [_bottomButton setTintColor:self.promptColor];
+    }
+    
 }
 
 - (void)updateLeftBottomButton

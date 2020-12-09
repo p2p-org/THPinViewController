@@ -105,6 +105,7 @@ static const NSUInteger THNumberOfPinEntries = 6;
     // Test button
     UIButton *leftBottomButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [pinViewController setLeftBottomButton:leftBottomButton];
+    [pinViewController setBottomButtonImage: [UIImage imageNamed:@"delete"]];
     
     // for a solid background color, use this:
     pinViewController.backgroundColor = [UIColor whiteColor];
