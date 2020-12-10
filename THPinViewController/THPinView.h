@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL disableCancel;
 @property (nonatomic, strong, nullable) UIButton *leftBottomButton;
 @property (nonatomic, strong, nullable) UIImage *bottomButtonImage;
+@property (nonatomic, strong, nullable) NSString *errorTitle;
 
 - (instancetype)initWithDelegate:(nullable id<THPinViewDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 - (void) resetInput;

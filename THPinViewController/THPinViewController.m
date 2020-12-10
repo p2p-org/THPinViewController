@@ -125,6 +125,15 @@
     self.pinView.promptTitle = self.promptTitle;
 }
 
+- (void)setErrorTitle:(NSString *)errorTitle
+{
+    if ([self.errorTitle isEqualToString:errorTitle]) {
+        return;
+    }
+    _errorTitle = [errorTitle copy];
+    self.pinView.errorTitle = self.errorTitle;
+}
+
 - (void)setPromptColor:(UIColor *)promptColor
 {
     if ([self.promptColor isEqual:promptColor]) {

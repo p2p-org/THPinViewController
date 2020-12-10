@@ -144,6 +144,10 @@ static const NSUInteger THNumberOfPinEntries = 6;
         return YES;
     } else {
         self.remainingPinEntries--;
+        pinViewController.errorTitle = @"Incorrect PIN";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            pinViewController.errorTitle = NULL;
+        });
         return NO;
     }
 }
@@ -158,16 +162,6 @@ static const NSUInteger THNumberOfPinEntries = 6;
     if (self.remainingPinEntries > THNumberOfPinEntries / 2) {
         return;
     }
-    
-    UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Incorrect PIN", @"")
-                               message:(self.remainingPinEntries == 1 ?
-                                        @"You can try again once." :
-                                        [NSString stringWithFormat:@"You can try again %lu times.",
-                                         (unsigned long)self.remainingPinEntries])
-                              delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-
 }
 
 - (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController

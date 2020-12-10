@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UILabel *promptLabel;
 @property (nonatomic, strong) THPinInputCirclesView *inputCirclesView;
+@property (nonatomic, strong) UILabel *errorLabel;
 @property (nonatomic, strong) THPinNumPadView *numPadView;
 @property (nonatomic, strong) UIButton *bottomButton;
 
@@ -50,6 +51,20 @@
         _inputCirclesView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:_inputCirclesView];
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_inputCirclesView attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0f constant:0.0f]];
+        
+        _errorLabel = [[UILabel alloc] init];
+        _errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _errorLabel.textAlignment = NSTextAlignmentCenter;
+        _errorLabel.numberOfLines = 0;
+        _errorLabel.font = [UIFont systemFontOfSize: 15.0f];
+        [_errorLabel setTextColor:UIColor.redColor];
+        [_errorLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
+                                                      forAxis:UILayoutConstraintAxisHorizontal];
+        [self addSubview:_errorLabel];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_errorLabel attribute:NSLayoutAttributeCenterX
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self attribute:NSLayoutAttributeCenterX
                                                         multiplier:1.0f constant:0.0f]];
@@ -103,6 +118,9 @@
                                  @"inputCirclesView" : _inputCirclesView,
                                  @"numPadView" : _numPadView};
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vFormat options:0 metrics:metrics views:views]];
+        
+        // errorLabel
+        [_errorLabel.topAnchor constraintEqualToAnchor:_inputCirclesView.bottomAnchor constant:16].active = true;
     }
     return self;
 }
@@ -188,6 +206,16 @@
     }
     _bottomButtonImage = [bottomButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [_bottomButton setImage:_bottomButtonImage forState:UIControlStateNormal];
+}
+
+- (NSString *)errorTitle
+{
+    return self.errorLabel.text;
+}
+
+- (void)setErrorTitle:(NSString *)errorTitle
+{
+    self.errorLabel.text = errorTitle;
 }
 
 #pragma mark - Public
