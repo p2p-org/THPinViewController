@@ -243,11 +243,13 @@
     if ([self.delegate respondsToSelector:@selector(pinViewControllerWillDismissAfterPinEntryWasCancelled:)]) {
         [self.delegate pinViewControllerWillDismissAfterPinEntryWasCancelled:self];
     }
-    [self dismissViewControllerAnimated:!_disableDismissAniamtion completion:^{
-        if ([self.delegate respondsToSelector:@selector(pinViewControllerDidDismissAfterPinEntryWasCancelled:)]) {
-            [self.delegate pinViewControllerDidDismissAfterPinEntryWasCancelled:self];
-        }
-    }];
+    if (!_disableDismissAfterCompletion) {
+        [self dismissViewControllerAnimated:!_disableDismissAniamtion completion:^{
+            if ([self.delegate respondsToSelector:@selector(pinViewControllerDidDismissAfterPinEntryWasCancelled:)]) {
+                [self.delegate pinViewControllerDidDismissAfterPinEntryWasCancelled:self];
+            }
+        }];
+    }
 }
 
 - (void)correctPinWasEnteredInPinView:(THPinView *)pinView
@@ -255,11 +257,13 @@
     if ([self.delegate respondsToSelector:@selector(pinViewControllerWillDismissAfterPinEntryWasSuccessful:)]) {
         [self.delegate pinViewControllerWillDismissAfterPinEntryWasSuccessful:self];
     }
-    [self dismissViewControllerAnimated:!_disableDismissAniamtion completion:^{
-        if ([self.delegate respondsToSelector:@selector(pinViewControllerDidDismissAfterPinEntryWasSuccessful:)]) {
-            [self.delegate pinViewControllerDidDismissAfterPinEntryWasSuccessful:self];
-        }
-    }];
+    if (!_disableDismissAfterCompletion) {
+        [self dismissViewControllerAnimated:!_disableDismissAniamtion completion:^{
+            if ([self.delegate respondsToSelector:@selector(pinViewControllerDidDismissAfterPinEntryWasSuccessful:)]) {
+                [self.delegate pinViewControllerDidDismissAfterPinEntryWasSuccessful:self];
+            }
+        }];
+    }
 }
 
 - (void)incorrectPinWasEnteredInPinView:(THPinView *)pinView
@@ -272,11 +276,13 @@
         if ([self.delegate respondsToSelector:@selector(pinViewControllerWillDismissAfterPinEntryWasUnsuccessful:)]) {
             [self.delegate pinViewControllerWillDismissAfterPinEntryWasUnsuccessful:self];
         }
-        [self dismissViewControllerAnimated:!_disableDismissAniamtion completion:^{
-            if ([self.delegate respondsToSelector:@selector(pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:)]) {
-                [self.delegate pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:self];
-            }
-        }];
+        if (!_disableDismissAfterCompletion) {
+            [self dismissViewControllerAnimated:!_disableDismissAniamtion completion:^{
+                if ([self.delegate respondsToSelector:@selector(pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:)]) {
+                    [self.delegate pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:self];
+                }
+            }];
+        }
     }
 }
 
