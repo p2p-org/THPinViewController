@@ -25,6 +25,8 @@
 @implementation THPinNumButton
 
 static UIColor* _textColor;
+static UIColor* _textHighlightColor;
+static UIColor* _backgroundHighlightColor;
 
 - (instancetype)initWithNumber:(NSUInteger)number letters:(NSString *)letters
 {
@@ -132,9 +134,8 @@ static UIColor* _textColor;
 {
     [super touchesBegan:touches withEvent:event];
     self.backgroundColorBackup = self.backgroundColor;
-    self.backgroundColor = self.tintColor;
-    UIColor *textColor = ([self.backgroundColorBackup isEqual:[UIColor clearColor]] ?
-                          [self.class averageContentColor] : self.backgroundColorBackup);
+    self.backgroundColor = [self.class backgroundHighlightColor];
+    UIColor *textColor = [self.class textHighlightColor];
     self.numberLabel.textColor = textColor;
     self.lettersLabel.textColor = textColor;
 }
@@ -172,30 +173,6 @@ static UIColor* _textColor;
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 82.0f : 75.0f;
 }
 
-+ (UIColor *)averageContentColor
-{
-    static UIColor *averageContentColor = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        UIView *contentView = [[UIApplication sharedApplication].keyWindow viewWithTag:THPinViewControllerContentViewTag];
-        if (! contentView) {
-            return;
-        }
-        CGSize size = CGSizeMake(1.0f, 1.0f);
-        UIGraphicsBeginImageContext(size);
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
-        CGContextSetInterpolationQuality(ctx, kCGInterpolationMedium);
-        [contentView drawViewHierarchyInRect:(CGRect){ .size = size } afterScreenUpdates:NO];
-        uint8_t *data = CGBitmapContextGetData(ctx);
-        averageContentColor = [UIColor colorWithRed:data[2] / 255.0f
-                                               green:data[1] / 255.0f
-                                                blue:data[0] / 255.0f
-                                               alpha:1.0f];
-        UIGraphicsEndImageContext();
-    });
-    return averageContentColor;
-}
-
 + (UIColor *)textColor
 {
     if (_textColor == nil) {
@@ -207,6 +184,32 @@ static UIColor* _textColor;
 + (void)setTextColor:(UIColor *)textColor
 {
     _textColor = textColor;
+}
+
++ (UIColor *)textHighlightColor
+{
+    if (_textHighlightColor == nil) {
+        return _textColor;
+    }
+    return _textHighlightColor;
+}
+
++ (void)setTextHighlightColor:(UIColor *)textHighlightColor
+{
+    _textHighlightColor = textHighlightColor;
+}
+
++ (UIColor *)backgroundHighlightColor
+{
+    if (_backgroundHighlightColor == nil) {
+        return [UIColor clearColor];
+    }
+    return _backgroundHighlightColor;
+}
+
++ (void)setBackgroundHighlightColor:(UIColor *)backgroundHighlightColor
+{
+    _backgroundHighlightColor = backgroundHighlightColor;
 }
 
 @end

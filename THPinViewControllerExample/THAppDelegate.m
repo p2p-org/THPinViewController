@@ -7,12 +7,15 @@
 //
 
 #import "THAppDelegate.h"
+#import "THPinNumButton.h"
 
 @implementation THAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [THPinNumButton setTextHighlightColor:UIColor.redColor];
+    [THPinNumButton setBackgroundHighlightColor:UIColor.yellowColor];
     return YES;
 }
 							

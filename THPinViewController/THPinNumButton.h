@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, assign) NSUInteger number;
 @property (nonatomic, readonly, copy, nullable) NSString *letters;
 @property (class) UIColor* textColor;
+@property (class) UIColor* textHighlightColor;
+@property (class) UIColor* backgroundHighlightColor;
 
 - (instancetype)initWithNumber:(NSUInteger)number letters:(nullable NSString *)letters NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithFrame:(CGRect)frame __attribute__((unavailable("Use -initWithNumber:letters: instead")));
@@ -22,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGFloat)diameter;
 + (void)setTextColor:(UIColor *)textColor;
++ (void)setTextHighlightColor:(UIColor *)textHighlightColor;
++ (void)setBackgroundHighlightColor:(UIColor *)backgroundHighlightColor;
 
 @end
 
