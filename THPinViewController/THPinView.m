@@ -36,6 +36,15 @@
         _delegate = delegate;
         _input = [NSMutableString string];
         
+        // configure stackView
+        _stackView = [[UIStackView alloc] init];
+        _stackView.translatesAutoresizingMaskIntoConstraints = NO;
+        _stackView.axis = UILayoutConstraintAxisVertical;
+        _stackView.alignment = UIStackViewAlignmentCenter;
+        _stackView.distribution = UIStackViewDistributionFill;
+        _stackView.spacing = 0;
+        
+        // configure prompt label
         _promptLabel = [[UILabel alloc] init];
         _promptLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _promptLabel.textAlignment = NSTextAlignmentCenter;
@@ -43,18 +52,12 @@
         _promptLabel.font = [UIFont systemFontOfSize: 21.0f weight: UIFontWeightSemibold];
         [_promptLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                       forAxis:UILayoutConstraintAxisHorizontal];
-        [self addSubview:_promptLabel];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[promptLabel]|" options:0 metrics:nil
-                                                                       views:@{ @"promptLabel" : _promptLabel }]];
         
+        // configure input circles view
         _inputCirclesView = [[THPinInputCirclesView alloc] initWithPinLength:[_delegate pinLengthForPinView:self]];
         _inputCirclesView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:_inputCirclesView];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_inputCirclesView attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0f constant:0.0f]];
         
+        // configure error label
         _errorLabel = [[UILabel alloc] init];
         _errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _errorLabel.textAlignment = NSTextAlignmentCenter;
@@ -63,21 +66,13 @@
         [_errorLabel setTextColor:UIColor.redColor];
         [_errorLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
                                                       forAxis:UILayoutConstraintAxisHorizontal];
-        [self addSubview:_errorLabel];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_errorLabel attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0f constant:0.0f]];
         
+        // configure num pad view
         _numPadView = [[THPinNumPadView alloc] initWithDelegate:self];
         _numPadView.translatesAutoresizingMaskIntoConstraints = NO;
         _numPadView.backgroundColor = self.backgroundColor;
-        [self addSubview:_numPadView];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_numPadView attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0f constant:0.0f]];
         
+        // configure bottom button
         _bottomButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _bottomButton.translatesAutoresizingMaskIntoConstraints = NO;
         _bottomButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
@@ -87,6 +82,33 @@
         [_bottomButton setTitleColor: [self promptColor] forState:UIControlStateNormal];
         [self updateBottomButton];
         [self.bottomButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // layout
+        [self addSubview:_stackView];
+        
+        [self addConstraint:[_stackView.topAnchor constraintEqualToAnchor:self.topAnchor]];
+        [self addConstraint:[_stackView.leftAnchor constraintEqualToAnchor:self.leftAnchor]];
+        [self addConstraint:[_stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]];
+        [self addConstraint:[_stackView.rightAnchor constraintEqualToAnchor:self.rightAnchor]];
+        
+        [_stackView addArrangedSubview:_promptLabel];
+        [_stackView addArrangedSubview:_inputCirclesView];
+        [_stackView addArrangedSubview:_errorLabel];
+        [_stackView addArrangedSubview:_numPadView];
+        
+        // spacing
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            _paddingBetweenPromptLabelAndInputCircles = 88.0f;
+            _paddingBetweenInputCirclesAndNumPad = 52.0f;
+        } else {
+            _paddingBetweenPromptLabelAndInputCircles = 22.5f;
+            _paddingBetweenInputCirclesAndNumPad = 41.5f;
+        }
+        [_stackView setCustomSpacing:_paddingBetweenPromptLabelAndInputCircles afterView:_promptLabel];
+        [_stackView setCustomSpacing:16.0f afterView:_inputCirclesView];
+        [_stackView setCustomSpacing:_paddingBetweenInputCirclesAndNumPad afterView:_errorLabel];
+        
+        // layout bottom button (touchId/faceId button)
         [self addSubview:_bottomButton];
        
         // place button right of zero number button
@@ -101,26 +123,6 @@
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_bottomButton attribute:NSLayoutAttributeWidth
                                                          relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:0
                                                         multiplier:0.0f constant:[THPinNumButton diameter]]];
-        
-        NSMutableString *vFormat = [NSMutableString stringWithString:@"V:|[promptLabel]-(paddingBetweenPromptLabelAndInputCircles)-[inputCirclesView]-(paddingBetweenInputCirclesAndNumPad)-[numPadView]"];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            _paddingBetweenPromptLabelAndInputCircles = 88.0f;
-            _paddingBetweenInputCirclesAndNumPad = 52.0f;
-        } else {
-            _paddingBetweenPromptLabelAndInputCircles = 22.5f;
-            _paddingBetweenInputCirclesAndNumPad = 41.5f;
-        }
-        [vFormat appendString:@"|"];
-        
-        NSDictionary *metrics = @{ @"paddingBetweenPromptLabelAndInputCircles" : @(_paddingBetweenPromptLabelAndInputCircles),
-                                   @"paddingBetweenInputCirclesAndNumPad" : @(_paddingBetweenInputCirclesAndNumPad)};
-        NSDictionary *views = @{ @"promptLabel" : _promptLabel,
-                                 @"inputCirclesView" : _inputCirclesView,
-                                 @"numPadView" : _numPadView};
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vFormat options:0 metrics:metrics views:views]];
-        
-        // errorLabel
-        [_errorLabel.topAnchor constraintEqualToAnchor:_inputCirclesView.bottomAnchor constant:16].active = true;
     }
     return self;
 }

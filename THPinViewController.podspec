@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.homepage     = 'https://github.com/antiraum/THPinViewController'
   s.license      = 'MIT'
   s.author       = { "Thomas Heß" => "mail@thomashess.name" }
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '11.0'
   s.source       = { :git => "https://github.com/antiraum/THPinViewController.git", :tag => "1.2.6" }
   s.source_files = 'THPinViewController/*.{h,m}'
   s.resources    = 'THPinViewController/*.bundle'

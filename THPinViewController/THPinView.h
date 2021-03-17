@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface THPinView : UIView
 
+@property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, weak, nullable) id<THPinViewDelegate> delegate;
 @property (nonatomic, copy, nullable) NSString *promptTitle;
 @property (nonatomic, strong, nullable) UIColor *promptColor;
