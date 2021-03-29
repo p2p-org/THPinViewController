@@ -13,13 +13,11 @@
 
 @interface THPinView () <THPinNumPadViewDelegate>
 
-@property (nonatomic, strong) UILabel *promptLabel;
 @property (nonatomic, strong) THPinInputCirclesView *inputCirclesView;
 @property (nonatomic, strong) UILabel *errorLabel;
 @property (nonatomic, strong) THPinNumPadView *numPadView;
 @property (nonatomic, strong) UIButton *bottomButton;
 
-@property (nonatomic, assign) CGFloat paddingBetweenPromptLabelAndInputCircles;
 @property (nonatomic, assign) CGFloat paddingBetweenInputCirclesAndNumPad;
 
 @property (nonatomic, strong) NSMutableString *input;
@@ -43,15 +41,6 @@
         _stackView.alignment = UIStackViewAlignmentCenter;
         _stackView.distribution = UIStackViewDistributionFill;
         _stackView.spacing = 0;
-        
-        // configure prompt label
-        _promptLabel = [[UILabel alloc] init];
-        _promptLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _promptLabel.textAlignment = NSTextAlignmentCenter;
-        _promptLabel.numberOfLines = 0;
-        _promptLabel.font = [UIFont systemFontOfSize: 21.0f weight: UIFontWeightSemibold];
-        [_promptLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
-                                                      forAxis:UILayoutConstraintAxisHorizontal];
         
         // configure input circles view
         _inputCirclesView = [[THPinInputCirclesView alloc] initWithPinLength:[_delegate pinLengthForPinView:self]];
@@ -91,20 +80,17 @@
         [self addConstraint:[_stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]];
         [self addConstraint:[_stackView.rightAnchor constraintEqualToAnchor:self.rightAnchor]];
         
-        [_stackView addArrangedSubview:_promptLabel];
         [_stackView addArrangedSubview:_inputCirclesView];
         [_stackView addArrangedSubview:_errorLabel];
         [_stackView addArrangedSubview:_numPadView];
         
         // spacing
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            _paddingBetweenPromptLabelAndInputCircles = 88.0f;
             _paddingBetweenInputCirclesAndNumPad = 52.0f;
         } else {
-            _paddingBetweenPromptLabelAndInputCircles = 22.5f;
             _paddingBetweenInputCirclesAndNumPad = 41.5f;
         }
-        [_stackView setCustomSpacing:_paddingBetweenPromptLabelAndInputCircles afterView:_promptLabel];
+        
         [_stackView setCustomSpacing:16.0f afterView:_inputCirclesView];
         [_stackView setCustomSpacing:_paddingBetweenInputCirclesAndNumPad afterView:_errorLabel];
         
@@ -139,8 +125,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    CGFloat height = (self.promptLabel.intrinsicContentSize.height + self.paddingBetweenPromptLabelAndInputCircles +
-                      self.inputCirclesView.intrinsicContentSize.height + self.paddingBetweenInputCirclesAndNumPad +
+    CGFloat height = (self.inputCirclesView.intrinsicContentSize.height + self.paddingBetweenInputCirclesAndNumPad +
                       self.numPadView.intrinsicContentSize.height);
     return CGSizeMake(self.numPadView.intrinsicContentSize.width, height);
 }
@@ -153,24 +138,14 @@
     self.numPadView.backgroundColor = self.backgroundColor;
 }
 
-- (NSString *)promptTitle
-{
-    return self.promptLabel.text;
-}
-
-- (void)setPromptTitle:(NSString *)promptTitle
-{
-    self.promptLabel.text = promptTitle;
-}
-
 - (UIColor *)promptColor
 {
-    return self.promptLabel.textColor;
+    return _bottomButton.titleLabel.textColor;
 }
 
 - (void)setPromptColor:(UIColor *)promptColor
 {
-    self.promptLabel.textColor = promptColor;
+    [_bottomButton setTitleColor: [self promptColor] forState:UIControlStateNormal];
 }
 
 - (BOOL)hideLetters

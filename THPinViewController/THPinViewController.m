@@ -15,6 +15,7 @@
 @property (nonatomic, strong) THPinView *pinView;
 @property (nonatomic, strong) UIView *blurView;
 @property (nonatomic, strong) NSArray *blurViewContraints;
+@property (nonatomic, strong) UILabel *promptLabel;
 
 @end
 
@@ -55,34 +56,52 @@
         self.view.backgroundColor = self.backgroundColor;
     }
     
+    // configure prompt label
+    _promptLabel = [[UILabel alloc] init];
+    _promptLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _promptLabel.textAlignment = NSTextAlignmentCenter;
+    _promptLabel.numberOfLines = 0;
+    _promptLabel.font = [UIFont systemFontOfSize: 21.0f weight: UIFontWeightSemibold];
+    [_promptLabel setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel
+                                                  forAxis:UILayoutConstraintAxisHorizontal];
+    
+    [self.view addSubview:_promptLabel];
+    _promptLabel.text = _promptTitle;
+    
     self.pinView = [[THPinView alloc] initWithDelegate:self];
     self.pinView.backgroundColor = self.view.backgroundColor;
-    self.pinView.promptTitle = self.promptTitle;
-    self.pinView.promptColor = self.promptColor;
     self.pinView.hideLetters = self.hideLetters;
     self.pinView.disableCancel = self.disableCancel;
     self.pinView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.pinView];
-    // center pin view
+    CGFloat topToPromptLabel = 0.0f;
+    CGFloat promptLabelToPad = 0.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        topToPromptLabel = 108.0f;
+        promptLabelToPad = 55.0f;
+    } else {
+        BOOL isLargeScreen = (CGRectGetHeight([UIScreen mainScreen].bounds) > 812.0f);
+        if (isLargeScreen) {
+            topToPromptLabel = 108.0f;
+            promptLabelToPad = 55.0f;
+        } else {
+            topToPromptLabel = 70.0f;
+            promptLabelToPad = 27.5f;
+        }
+    }
+    
+    [self.view addConstraint:[_promptLabel.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 20.0f]];
+    [self.view addConstraint:[_promptLabel.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20.0f]];
+    [self.view addConstraint: [_promptLabel.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:topToPromptLabel]];
+    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pinView attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f constant:0.0f]];
-    CGFloat pinViewYOffset = 0.0f;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        pinViewYOffset = -9.0f;
-    } else {
-        BOOL isFourInchScreen = (fabs(CGRectGetHeight([UIScreen mainScreen].bounds) - 568.0f) < DBL_EPSILON);
-        if (isFourInchScreen) {
-            pinViewYOffset = 25.5f;
-        } else {
-            pinViewYOffset = 18.5f;
-        }
-    }
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pinView attribute:NSLayoutAttributeCenterY
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1.0f constant:pinViewYOffset]];
+    
+    [self.view addConstraint:[_pinView.topAnchor constraintEqualToAnchor:_promptLabel.bottomAnchor constant:promptLabelToPad]];
+    
+    [self.view bringSubviewToFront:_promptLabel];
 }
 
 #pragma mark - Properties
@@ -122,7 +141,7 @@
         return;
     }
     _promptTitle = [promptTitle copy];
-    self.pinView.promptTitle = self.promptTitle;
+    _promptLabel.text = promptTitle;
 }
 
 - (void)setErrorTitle:(NSString *)errorTitle
@@ -140,6 +159,7 @@
         return;
     }
     _promptColor = promptColor;
+    _promptLabel.textColor = promptColor;
     self.pinView.promptColor = self.promptColor;
 }
 

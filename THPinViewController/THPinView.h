@@ -29,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, weak, nullable) id<THPinViewDelegate> delegate;
-@property (nonatomic, copy, nullable) NSString *promptTitle;
 @property (nonatomic, strong, nullable) UIColor *promptColor;
 @property (nonatomic, assign) BOOL hideLetters;
 @property (nonatomic, assign) BOOL disableCancel;
