@@ -47,7 +47,7 @@ static UIColor* _backgroundHighlightColor;
         _numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _numberLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)number];
         _numberLabel.textAlignment = NSTextAlignmentCenter;
-        _numberLabel.font = [UIFont systemFontOfSize:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 41.0f : 36.0f];
+        _numberLabel.font = [UIFont systemFontOfSize:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 41.0f : 36.0f weight:UIFontWeightSemibold];
         [contentView addSubview:_numberLabel];
         [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[numberLabel]|" options:0
                                                                             metrics:nil
