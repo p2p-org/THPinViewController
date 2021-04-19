@@ -7,6 +7,7 @@
 //
 
 @import UIKit;
+#import "THPinView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -49,6 +50,7 @@ static const NSInteger THPinViewControllerContentViewTag = 14742;
 @property (nonatomic, assign) BOOL disableCancel; // hides the cancel button
 @property (nonatomic, assign) BOOL disableDismissAniamtion;
 @property (nonatomic, assign) BOOL disableDismissAfterCompletion;
+@property (nonatomic, strong) THPinView *pinView;
 
 - (instancetype)initWithDelegate:(nullable id<THPinViewControllerDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 - (void) clear;
